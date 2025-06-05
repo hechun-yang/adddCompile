@@ -1,0 +1,46 @@
+# Compiled Object files
+*.o
+*.obj
+*.slo
+*.lo
+
+# Compiled Executables
+*.exe
+*.out
+*.app
+*.dll
+*.so
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+
+# IDE-specific files
+.vscode/
+.vs/
+*.suo
+*.user
+*.vcxproj.filters
+*.vcxproj.user
+# Add other IDE specific files if you use others (e.g., .idea/ for JetBrains)
+
+# Build directories (if you have a separate build folder)
+build/
+Debug/
+Release/
+x64/ # Common for VS output
+
+# Other temporary files
+*.tmp
+*.bak
+*~
+
+# CMake specific (if you start using CMake later)
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
