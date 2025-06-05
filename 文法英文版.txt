@@ -1,0 +1,99 @@
+/* ==================== */
+/* 程序结构 */
+/* ==================== */
+<Program>       → { <GlobalDecl> } <FunctionDef> { <FunctionDef> }
+
+/* ==================== */
+/* 全局声明 */
+/* ==================== */
+<GlobalDecl>    → <BaseType> ( <Identifier> [ <Initializer> ] ';'
+                | <ArrayDecl> [ <ArrayInitializer> ] ';'
+
+<ArrayDecl>     → <Identifier> '[' ']'  /* 数组声明 */
+<ArrayInitializer> → '=' '{' ( <StringLiteral>+ | <IntLiteral>+ ) '}'
+<BaseType>      → "int" | "float" | "char" | "string"
+
+/* ==================== */
+/* 函数定义 */
+/* ==================== */
+<FunctionDef>   → "void" <FunctionHeader> '{' { <Statement> } '}'
+<FunctionHeader> → <Identifier> '(' [ <ParamList> ] ')'
+<ParamList>     → <ParamDecl> ( ',' <ParamDecl> )*
+<ParamDecl>     → <BaseType> <Identifier>
+
+/* ==================== */
+/* 语句 */
+/* ==================== */
+<Statement>     → <GlobalDecl>
+                | <IOStatement> ';'
+                | <Assignment> ';'
+                | <IfStatement>
+                | <LoopStatement>
+
+/* ==================== */
+/* 表达式 */
+/* ==================== */
+<Expression>    → <AdditiveExpr>
+<AdditiveExpr>  → <MultiplicativeExpr> ( ('+' | '-') <MultiplicativeExpr> )*
+<MultiplicativeExpr> → <PrimaryExpr> ( ('*' | '/') <PrimaryExpr> )*
+<PrimaryExpr>   → <Identifier>
+                | <Literal>
+                | '(' <Expression> ')'
+<Literal>       → <IntLiteral> | <StringLiteral>
+<Initializer>   → '=' ( <IntLiteral> | <Expression> )
+
+/* ==================== */
+/* I/O 语句 */
+/* ==================== */
+<IOStatement>   → "scanf" '(' <ScanfArgs> ')'
+                | "printf" '(' <PrintfArgs> ')'
+<ScanfArgs>     → <FormatString> ',' ( '&' <Identifier> | <ArrayRef> )
+<PrintfArgs>    → <FormatString> ',' <Identifier>
+                | <IntLiteral>
+<FormatString>  → '"' <FormatSpec> '"'
+<FormatSpec>    → "%d" | "%f" | "%c" | "%s"
+
+/* ==================== */
+/* 赋值语句 */
+/* ==================== */
+<Assignment>    → <LValue> '=' <RValue>
+<LValue>        → <Identifier>
+                | <ArrayRef>
+                | <FunctionCall>
+<ArrayRef>      → <Identifier> '[' ( <Identifier> | <StringLiteral> ) ']'
+<FunctionCall>  → <Identifier> '(' [ <ArgList> ] ')'
+<ArgList>       → ( <Identifier> | <StringLiteral> | <IntLiteral> ) 
+                 ( ',' ( <Identifier> | <StringLiteral> | <IntLiteral> ) )*
+<RValue>        → <Expression> | <IntLiteral>
+
+/* ==================== */
+/* 控制结构 */
+/* ==================== */
+<IfStatement>   → "if" '(' <Condition> ')' <Block> [ "else" <Block> ]
+<Condition>     → <RelationalOp> ( <Identifier> | <Literal> )
+<RelationalOp>  → ">" | ">=" | "<" | "<=" | "=="
+
+<LoopStatement> → <WhileLoop> | <ForLoop>
+<WhileLoop>     → "while" '(' <Condition> ')' <Block>
+<ForLoop>       → "for" '(' 
+                    [ <Assignment> ] ';' 
+                    [ <Condition> ] ';' 
+                    [ <Increment> ] 
+                 ')' <Block>
+<Increment>     → <Identifier> "++" 
+                | <Identifier> "--"
+                | "++" <Identifier>
+                | "--" <Identifier>
+
+<Block>         → '{' { <Statement> } '}'
+                | <Statement>
+
+/* ==================== */
+/* 终结符说明 */
+/* ==================== */
+/*
+  <Identifier>    : 标识符 (变量/函数名) - 对应原始 "BS"
+  <IntLiteral>    : 整型常量 - 对应原始 "ZC"
+  <StringLiteral> : 字符串常量 - 对应原始 "SS"
+  <ArrayRef>      : 数组引用 - 对应原始 "SZ" 的使用场景
+*/
